@@ -1,0 +1,15 @@
+{% extends 'base/main.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="container">
+    <img class="project-image" src="{{ project.thumbnail.url }}">
+    <h1>{{project.title}}</h1>
+    <a class="btn btn-warning rounded-pill" href="{% url 'edit-project' project.id %}">Редактировать</a>
+    <hr>
+    <p>{{project.body|safe}}</p>
+</div>
+
+{% endblock %}
