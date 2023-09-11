@@ -7,7 +7,9 @@
 <div class="container">
     <img class="project-image" src="{{ project.thumbnail.url }}">
     <h1>{{project.title}}</h1>
-    <a class="btn btn-warning rounded-pill" href="{% url 'edit-project' project.id %}">Редактировать</a>
+    {% if request.user.is_authenticated %}
+        <a class="btn btn-warning rounded-pill" href="{% url 'edit-project' project.id %}">Редактировать</a>
+    {% endif %}
     <hr>
     <p>{{project.body|safe}}</p>
 </div>
