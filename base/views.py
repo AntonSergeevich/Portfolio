@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Project, Skill, Message
-from .forms import ProjectForm, MessageForm
+from .models import Project, Skill, Message, Endorsement
+from .forms import ProjectForm, MessageForm, SkillForm, EndorsementForm, CommentForm, QuestionForm
 from django.contrib import messages
 
 def homePage(request):
@@ -8,20 +8,31 @@ def homePage(request):
     detailedSkills = Skill.objects.exclude(body='')
     skills = Skill.objects.filter(body='')
     form = MessageForm()
-
+    endorsements = Endorsement.objects.filter(approved=True)
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Сообщение отправлено ☺')
-
-    context = {'projects': projects, 'skills': skills, 'detailedSkills': detailedSkills, 'form': form}
+        form = MessageForm()
+    context = {'projects': projects, 'skills': skills, 'detailedSkills': detailedSkills, 'form': form, 'endorsements': endorsements}
     return render(request, 'base/home.html', context)
 
 
 def projectPage(request, pk):
     project = Project.objects.get(id=pk)
-    context = {'project': project}
+    count = project.comment_set.count()
+    comments = project.comment_set.all().order_by('-created')
+    form = CommentForm()
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.project = project
+            comment.save()
+            messages.success(request, 'Комментарий оставлен ☺')
+    form = CommentForm()
+    context = {'project': project, 'count': count, 'comments': comments, 'form': form}
     return render(request, 'base/project.html', context)
 
 
@@ -63,3 +74,36 @@ def messagePage(request, pk):
     context = {'message': message}
     return render(request, 'base/message.html', context)
 
+def addSkill(request):
+    form = SkillForm()
+    if request.method == 'POST':
+        form = SkillForm(request.POST)
+        form.save()
+        messages.success(request, 'Скилл был добавлен')
+        return redirect('home')
+    context = {'form': form,}
+    return render(request, 'base/skill_form.html', context)
+
+def addEndorsement(request):
+    form = EndorsementForm()
+    if request.method == 'POST':
+        form = EndorsementForm(request.POST)
+        form.save()
+        messages.success(request, 'Спасибо!☺ Отзыв был успешно добавлен')
+        return redirect('home')
+    form = EndorsementForm()
+    context = {'form': form,}
+    return render(request, 'base/endorsement_form.html', context)
+
+def donationPage(reqest):
+    return render(reqest, 'base/donation.html')
+
+def chartPage(request):
+    form = QuestionForm()
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
+        form.save()
+        messages.success(request, 'Спасибо!☺ Голосование прошло успешно!')
+        return redirect('chart')
+    form = QuestionForm()
+    return render(request, 'base/chart.html', {'form':form})

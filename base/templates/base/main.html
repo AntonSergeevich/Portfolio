@@ -5,24 +5,173 @@
     <meta charset="UTF-8">
     <title>Glukhov Anton</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- skick slider -->
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/slick.css' %}">
+    <!-- codesnippets -->
+    <link href="{% static 'ckeditor/ckeditor/plugins/codesnippet/lib/highlight/styles/solarized_dark.css' %}"
+          rel="stylesheet">
+
+    <!-- my style -->
     <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/main.css' %}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/menu.css' %}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/course.css' %}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/blog.css' %}">
+    <!-- favicon -->
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}">
+
+    <!-- high charts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <!-- jquery & kit-->
+    <script src="https://kit.fontawesome.com/f8a43e162d.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.4.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- codesnippets -->
+    <script src="{% static 'ckeditor/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js' %}"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script src="{% static 'js/script.js' %}"></script>
+
+    <style>
+        .highcharts-figure,
+        .highcharts-data-table table {
+            min-width: 310px;
+            max-width: 800px;
+            margin: 1em auto;
+        }
+
+        #container {
+            height: 400px;
+        }
+
+        .highcharts-data-table table {
+            font-family: Verdana, sans-serif;
+            border-collapse: collapse;
+            border: 1px solid #ebebeb;
+            margin: 10px auto;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .highcharts-data-table caption {
+            padding: 1em 0;
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .highcharts-data-table th {
+            font-weight: 600;
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table td,
+        .highcharts-data-table th,
+        .highcharts-data-table caption {
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table thead tr,
+        .highcharts-data-table tr:nth-child(even) {
+            background: #f8f8f8;
+        }
+
+        .highcharts-data-table tr:hover {
+            background: #f1f7ff;
+        }
+
+    </style>
+
 </head>
 <body>
-
 {% include 'base/navbar.html' %}
 {% if messages %}
-<ul class="messages">
+<div class="toast-container position-fixed d-flex justify-content-center align-items-center w-100 "
+     style="z-index: 999999">
     {% for message in messages %}
-    <div class="alert alert-success" role="alert">
-        {{ message }}
+    <div id="liveToast" class="toast bg-warning" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Сообщение</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Закрыть"></button>
+        </div>
+        <div class="toast-body">
+            <h5>{{ message }}</h5>
+        </div>
     </div>
     {% endfor %}
-</ul>
+</div>
 {% endif %}
 {% block content %}
-{% endblock %}
 
+{% endblock %}
+{% include 'base/footer.html' %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="{% static 'js/slick.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-element-bundle.min.js"></script>
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.slider-nav').slick({
+            responsive: [
+                {
+                    breakpoint: 1420,
+                    settings: {
+                        slidesToShow: 2,
+                    }
+                },
+                {
+                    breakpoint: 800,
+                    settings: {
+                        slidesToShow: 1,
+                    },
+                }],
+
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            arrows: false,
+        });
+
+    });
+
+    var header = $('.navigation-bar'),
+        scrollPrev = 0;
+
+    $(window).scroll(function () {
+        var scrolled = $(window).scrollTop();
+
+        if (scrolled > 100 && scrolled > scrollPrev) {
+            header.addClass('out');
+        } else {
+            header.removeClass('out');
+        }
+        scrollPrev = scrolled;
+
+    });
+
+    const toastLiveExample = document.getElementById('liveToast')
+    const toast = new bootstrap.Toast(toastLiveExample)
+    toast.show()
+
+
+
+
+</script>
 </body>
 </html>

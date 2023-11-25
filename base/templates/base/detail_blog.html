@@ -1,0 +1,28 @@
+{% extends 'base/main.html' %}
+{% load static %}
+
+{% block content %}
+
+    <section class="container">
+        <div class="post-container">
+            <div class="post-img-title">
+                <div class="post-img">
+                    <img src="{{ post.image.url }}">
+                </div>
+                <div class="post-title">
+                    <h1>{{ post.title }}</h1>
+                    <h5>Автор: {{ post.author }}</h5>
+                    <span>{{ post.created }}</span>
+                    <span class="blog-tag">{{ post.categoryType }}</span>
+                </div>
+            </div>
+            <div class="post-text">
+                <p>{{ post.body|safe }}</p>
+                {% include 'base/comment_blog.html' %}
+            </div>
+
+        </div>
+    </section>
+
+
+{% endblock %}

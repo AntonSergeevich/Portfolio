@@ -1,0 +1,84 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% load courses_tags %}
+
+{% block content %}
+<!-- menuCategory -->
+<div style="background: black">
+    <div class="navigation-courses" style="margin-top: 58px">
+        {% get_categories as categories %}
+        <ul class="menu-main">
+            {% for c in categories %}
+            {% if c.pk == cat_selected %}
+            <li>{{ c.name }}</li>
+            {% else %}
+            <li><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- sideBar -->
+    <div>
+        {% get_show_category cat_id=cat_selected as posts_preview %}
+        {% if posts_preview %}
+        <div class="header-side">
+            <input class="menu-side-btn" type="checkbox" id="menu-side-btn"/>
+            <label class="menu-side-icon" for="menu-side-btn"><span class="nav-side-icon"></span></label>
+            <ul class="menu-side">
+                {% for p in posts_preview %}
+                <li><a href="{{ p.get_absolute_url }}">{{ p.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- content -->
+        <div class="container" style="background: black">
+            <div class="container-courses mb-5">
+                <div class="main-course">
+                    <ol class="list-course ">
+                        {% for c in posts %}
+                        <li><a href="{{ c.get_absolute_url }}">{{ c.title }}</a></li>
+                        {% endfor %}
+                    </ol>
+                    <div class="img-course">
+                        {% if post.img %}
+                        <img src="{{ post.img.url }}" alt="image {{ post.title }}">
+                        {% endif %}
+
+                        <h2>{{ post.title }}</h2>
+                    </div>
+                    <div class="description-course">
+                        <p> {{ post.desc|safe }} </p>
+                        <h6>{{ post.created }}</h6>
+
+                    </div>
+
+
+
+                    <section class="cards">
+                        {% for course in posts_all %}
+                        <article class="course-card">
+                            <a href="{{ course.get_absolute_url }}">
+                                {% if course.img %}
+                                <img src="{{ course.img.url }}" alt="card picture">
+                                {% else %}
+                                <p>Изображение не загружено</p>
+                                {% endif %}
+                            </a>
+                            <div class="card-content">
+                                <h5>{{ course.name }}</h5>
+                            </div>
+                        </article>
+                        {% endfor %}
+                    </section>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

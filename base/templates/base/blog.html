@@ -1,0 +1,32 @@
+{% extends 'base/main.html' %}
+{% load static %}
+
+{% block content %}
+
+	<section class="container">
+
+		<div class="blog-container">
+			<h1 class="text-center">Добро пожаловать в блог</h1>
+			<h5 class="text-center">Здесь вы найдете статьи, уроки и новости из мира программирования и IT</h5>
+			{% for post in posts%}
+			<div class="blog-slider comment">
+
+					<div class="blog-slider__item swiper-slide">
+						<div class="blog-slider__img">
+							<img src="{{ post.image.url }}" alt="">
+						</div>
+
+						<div class="blog-slider__content">
+							<span class="blog-slider__code">{{ post.created }}</span>
+							<span class="blog-tag">{{ post.categoryType }}</span>
+							<div class="blog-slider__title">{{ post.title }}</div>
+							<div class="blog-slider__text">{{ post.body|safe|truncatechars:200 }}</div>
+							<a href="{% url 'post' post.id %}" class="blog-slider__button blog-shadow">Читать дальше</a>
+						</div>
+					</div>
+
+			</div>
+			{% endfor %}
+		</div>
+	</section>
+{% endblock %}

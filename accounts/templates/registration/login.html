@@ -1,0 +1,23 @@
+{% extends 'base/main.html' %}
+
+
+{% block title %}Вход на сайт{% endblock title %}
+
+
+{% block content %}
+
+    <div class="container" style="height: 600px">
+        <div class="row mt-5">
+            <h1>Вход на сайт</h1>
+            <p >Используйте эту форму для входа на сайт:</p>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-outline-primary mb-3">Войти</button>
+            </form>
+            <h4>Или <a href="{% url 'password_reset' %}"> восстановить пароль</a></h4>
+        </div>
+
+    </div>
+
+{% endblock content %}

@@ -4,14 +4,41 @@
 
 {% block content %}
 
-<div class="container">
-    <img class="project-image" src="{{ project.thumbnail.url }}">
-    <h1>{{project.title}}</h1>
-    {% if request.user.is_authenticated %}
+
+<div class="container" style="margin-top: 70px">
+    <div class="project-container">
+        <img class="project-image" src="{{ project.thumbnail.url }}">
+        <h1>{{project.title}}</h1>
+        {% if request.user.is_authenticated %}
         <a class="btn btn-warning rounded-pill" href="{% url 'edit-project' project.id %}">Редактировать</a>
-    {% endif %}
-    <hr>
-    <p>{{project.body|safe}}</p>
+        {% endif %}
+        <hr>
+        <p>{{project.body|safe}}</p>
+        <div class="comments-container">
+            <h3>Комментарии ({{ count }})</h3>
+            <hr>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="mb-3">
+                    <label for="" class="form-label">{{field.label}}</label>
+                    {{field}}
+                </div>
+                {% endfor %}
+                <input class="btn btn-primary" type="submit" value="Добавить">
+            </form>
+            <hr>
+            {% for comment in comments%}
+            <div class="card my-3 shadow">
+                <div class="card-body">
+                    <h5>{{ comment.name }}</h5>
+                    <small class="my-3">{{ comment.created }}</small>
+                    <p>{{ comment.body }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 
 {% endblock %}
